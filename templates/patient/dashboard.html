@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Patient Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Patient Dashboard</h2>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Your Information</h5>
+                <p><strong>Name:</strong> {{ patient.user.get_full_name() }}</p>
+                <p><strong>Blood Type:</strong> {{ patient.blood_type or 'Not specified' }}</p>
+                <p><strong>Allergies:</strong> {{ patient.allergies or 'None recorded' }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Upcoming Appointments</h5>
+                <a href="{{ url_for('book_appointment') }}" class="btn btn-sm btn-primary">Book New</a>
+            </div>
+            <div class="card-body">
+                {% if appointments %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date/Time</th>
+                            <th>Doctor</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appt in appointments %}
+                        <tr>
+                            <td>{{ appt.date_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>Dr. {{ appt.staff.last_name }}</td>
+                            <td>{{ appt.reason }}</td>
+                            <td>
+                                <span class="badge bg-{{ 'success' if appt.status == 'completed' else 'warning' }}">
+                                    {{ appt.status }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No upcoming appointments</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

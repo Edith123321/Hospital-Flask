@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Patient Dashboard{% endblock %}
+
+{% block content %}
+<h2>Your Appointments</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Date/Time</th>
+            <th>Doctor</th>
+            <th>Reason</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for appointment in appointments %}
+        <tr>
+            <td>{{ appointment.date_time.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>Dr. {{ appointment.staff.last_name }}</td>
+            <td>{{ appointment.reason }}</td>
+            <td>{{ appointment.status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
